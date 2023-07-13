@@ -12,4 +12,8 @@ class OrderItems extends Model
     protected $primaryKey = 'id';
     public $incrementing = true;
     protected $fillable = ['order_id', 'menu_id', 'order_price'];
+    
+    public function menu(){
+        return $this->belongsTo(Menu::class, 'menu_id')->withDefault();
+    }
 }

@@ -35,24 +35,19 @@
     </nav>
     <main class="pt-5">
         <div class="container">
-            <div class="row">
-                <div class="col-md-12">
-                    <a href="{{ route('order.create') }}">Create New Order</a>
-                </div>
-            </div>
             <table id="showBooksIn" class="table table-bordered">
                 <thead>
                     <tr>
-                        <th>ID</th>
-                        <th>Order Total</th>
-                        <th>Action</th>
+                        <th>Menu</th>
+                        <th>Type</th>
+                        <th>Count</th>
                     </tr>
                 </thead>
                 @foreach($orders as $row)
                     <tr>
-                        <td>{{$row['id']}}</td>
-                        <td>{{$row['order_total']}}</td>
-                        <td><a href="{{ route('order.view', $row['id']) }}">View</a></td>
+                        <td>{{$row['menu']['menu_name']}}</td>
+                        <td>{{$row['menu']['menu_type']}}</td>
+                        <td>{{$row['total']}}</td>
                     </tr>
                 @endforeach
             </table>
@@ -61,3 +56,4 @@
     @yield('content')
 </body>
 </html>
+

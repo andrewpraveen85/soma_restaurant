@@ -20,7 +20,10 @@
                     </li>
                     @else
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('reports') }}">Report</a>
+                        <a class="nav-link" href="{{ route('reports.daily', date('Y-m-d')) }}">Daily Sales Revenue</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('reports.famous') }}">Top Selling Dish</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('signout') }}">Logout</a>
@@ -80,7 +83,7 @@
                 <thead>
                     <tr>
                         <th>ID</th>
-                        <th>Menu Id</th>
+                        <th>Menu</th>
                         <th>Price</th>
                         <th>Action</th>
                     </tr>
@@ -88,7 +91,7 @@
                 @foreach($orderItems as $row)
                 <tr>
                     <td>{{$row['id']}}</td>
-                    <td>{{$row['menu_id']}}</td>
+                    <td>{{$row['menu']['menu_name']}}</td>
                     <td>{{$row['order_price']}}</td>
                     <td>
                         <form method="POST" action="{{ route('order.item.remove') }}">

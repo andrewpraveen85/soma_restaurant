@@ -8,6 +8,7 @@ use App\Models\Menu;
 use App\Models\Order;
 use App\Models\OrderItems;
 use Illuminate\Support\Facades\Auth;
+use DB;
 
 class CustomAuthController extends Controller
 {
@@ -48,7 +49,9 @@ class CustomAuthController extends Controller
             $main = Menu::select('menu_name', 'id')->where('menu_type', 'main')->get();
             $side = Menu::select('menu_name', 'id')->where('menu_type', 'side')->get();
             $dessert = Menu::select('menu_name', 'id')->where('menu_type', 'dessert')->get();
-            $orderItems = OrderItems::where('order_id', $id)->get()->toArray();
+            $orderItems = OrderItems::where('order_id', $id)->with(['menu' => function ($query) {
+                $query->select('id', 'menu_name');
+            }])->get()->toArray();
             $order = Order::where('id', $id)->first();
             return view('orderview',['order'=>$order,'orderid'=>$id,'main'=>$main, 'side'=>$side, 'dessert'=>$dessert, 'orderItems'=>$orderItems]);
         }
@@ -127,10 +130,54 @@ class CustomAuthController extends Controller
         return redirect("login")->withSuccess('You are not allowed to access');
     }
     
-    public function reports()
+    public function reportsdaily($date)
     {
-        return view('reports');
-    }  
+        if(Auth::check()){
+            
+            $from = $date.' 00:00:00';
+            $to = $date.' 23:59:59';
+            $orders = Order::where('created_at', '>=', $from)->where('updated_at','<=', $to)->get();
+            $total = 0;
+            foreach($orders as $row){
+                $total = $total + $row->order_total;
+            }
+            return view('reportsdaily',['orders'=>$orders->toArray(), 'total'=>$total]);
+        }
+  
+        return redirect("login")->withSuccess('You are not allowed to access');
+    }
+    
+    public function reportsdate(Request $request)
+    {
+        if(Auth::check()){
+             $request->validate([
+                'date' => 'required',
+            ]);
+            $from = $request->input('date').' 00:00:00';
+            $to = $request->input('date').' 23:59:59';
+            $orders = Order::where('created_at', '>=', $from)->where('updated_at','<=', $to)->get();
+            $total = 0;
+            foreach($orders as $row){
+                $total = $total + $row->order_total;
+            }
+            return view('reportsdaily',['orders'=>$orders->toArray(), 'total'=>$total]);
+        }
+  
+        return redirect("login")->withSuccess('You are not allowed to access');
+    }
+    
+    public function reportsfamous()
+    {
+        if(Auth::check()){
+            $orders = OrderItems::select('menu_id', DB::raw('count(id) as total'))
+                 ->groupBy('menu_id')->with(['menu' => function ($query) {
+                    $query->select('id', 'menu_name', 'menu_type');
+                }])->get()->toArray();
+            return view('reportsfamous',['orders'=>$orders]);
+        }
+  
+        return redirect("login")->withSuccess('You are not allowed to access');
+    } 
     
     public function signOut() {
         Session::flush();

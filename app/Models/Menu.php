@@ -11,4 +11,8 @@ class Menu extends Model
     protected $table = 'menu';
     protected $primaryKey = 'id';
     public $incrementing = true;
+    
+    public function orderItems(){
+        return $this->hasmany('OrderItems');
+    }
 }

@@ -20,7 +20,10 @@
                     </li>
                     @else
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('reports') }}">Report</a>
+                        <a class="nav-link" href="{{ route('reports.daily', date('Y-m-d')) }}">Daily Sales Revenue</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('reports.famous') }}">Top Selling Dish</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('signout') }}">Logout</a>

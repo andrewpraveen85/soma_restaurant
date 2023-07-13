@@ -35,26 +35,37 @@
     </nav>
     <main class="pt-5">
         <div class="container">
-            <div class="row">
-                <div class="col-md-12">
-                    <a href="{{ route('order.create') }}">Create New Order</a>
+            <form method="POST" action="{{ route('reports.date') }}">
+                @csrf
+                <div class="row">
+                    <div class="col-md-3">
+                        Select a Date
+                    </div>
+                    <div class="col-md-5">
+                        <input type="date" name="date">
+                    </div>
+                    <div class="col-md-4">
+                        <button type="submit" class="btn btn-dark btn-block">Filter</button>
+                    </div>
                 </div>
-            </div>
+            </form>
             <table id="showBooksIn" class="table table-bordered">
                 <thead>
                     <tr>
                         <th>ID</th>
                         <th>Order Total</th>
-                        <th>Action</th>
                     </tr>
                 </thead>
                 @foreach($orders as $row)
                     <tr>
                         <td>{{$row['id']}}</td>
                         <td>{{$row['order_total']}}</td>
-                        <td><a href="{{ route('order.view', $row['id']) }}">View</a></td>
                     </tr>
                 @endforeach
+                <tr>
+                    <td></td>
+                    <th>{{$total}}</th>
+                </tr>
             </table>
         </div>
     </main>

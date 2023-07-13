@@ -17,7 +17,9 @@ Route::get('dashboard', [CustomAuthController::class, 'dashboard'])->name('dashb
 Route::get('login', [CustomAuthController::class, 'index'])->name('login');
 Route::post('custom-login', [CustomAuthController::class, 'customLogin'])->name('login.custom'); 
 Route::get('signout', [CustomAuthController::class, 'signOut'])->name('signout');
-Route::get('reports', [CustomAuthController::class, 'reports'])->name('reports');
+Route::get('reports-daily/{date}', [CustomAuthController::class, 'reportsdaily'])->name('reports.daily');
+Route::post('reports-date', [CustomAuthController::class, 'reportsdate'])->name('reports.date');
+Route::get('reports-famous', [CustomAuthController::class, 'reportsfamous'])->name('reports.famous');
 Route::get('create-order', [CustomAuthController::class, 'ordercreate'])->name('order.create');
 Route::post('create-order-item', [CustomAuthController::class, 'orderItemscreate'])->name('order.item.create');
 Route::post('remove-order-item', [CustomAuthController::class, 'orderItemsremove'])->name('order.item.remove');
