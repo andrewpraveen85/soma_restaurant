@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\CustomAuthController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -13,6 +13,17 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('dashboard', [CustomAuthController::class, 'dashboard'])->name('dashboard'); 
+Route::get('login', [CustomAuthController::class, 'index'])->name('login');
+Route::post('custom-login', [CustomAuthController::class, 'customLogin'])->name('login.custom'); 
+Route::get('signout', [CustomAuthController::class, 'signOut'])->name('signout');
+Route::get('reports', [CustomAuthController::class, 'reports'])->name('reports');
+Route::get('create-order', [CustomAuthController::class, 'ordercreate'])->name('order.create');
+Route::post('create-order-item', [CustomAuthController::class, 'orderItemscreate'])->name('order.item.create');
+Route::post('remove-order-item', [CustomAuthController::class, 'orderItemsremove'])->name('order.item.remove');
+Route::post('edit-order', [CustomAuthController::class, 'orderedit'])->name('order.edit');
+Route::get('view-order/{id}', [CustomAuthController::class, 'orderview'])->name('order.view');
 Route::get('/', function () {
     return view('welcome');
 });
+
